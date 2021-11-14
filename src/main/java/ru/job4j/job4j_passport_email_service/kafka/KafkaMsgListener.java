@@ -18,8 +18,8 @@ public class KafkaMsgListener {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @KafkaListener(topics = "${greeting.topic.name}", groupId = "group_one", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "${app.topic.name}", groupId = "${app.group-id}", containerFactory = "kafkaListenerContainerFactory")
     public void consumeUserMessage(@Payload PassportDto msg, @Headers MessageHeaders headers) throws IOException {
-        System.out.println("received data in KafkaMsgListener =" + msg);
+        logger.info("received data in KafkaMsgListener = {}", msg);
     }
 }

@@ -25,6 +25,9 @@ public class KafkaConsumerConfig {
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
+    @Value(value = "${app.group-id}")
+    private String groupId;
+
     @Bean
     public ConsumerFactory<String, PassportDto> consumerFactory(){
         JsonDeserializer<PassportDto> deserializer = new JsonDeserializer<>(PassportDto.class);
@@ -34,8 +37,8 @@ public class KafkaConsumerConfig {
 
         Map<String, Object> config = new HashMap<>();
 
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.90.195:29092");
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_one");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
