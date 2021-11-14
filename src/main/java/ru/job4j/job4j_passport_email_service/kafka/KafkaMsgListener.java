@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import ru.job4j.job4j_passport_email_service.kafka.dto.PassportDto;
+import ru.job4j.job4j_passport_email_service.service.EmailNotificationService;
 
 import java.io.IOException;
 
@@ -19,7 +20,9 @@ public class KafkaMsgListener {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @KafkaListener(topics = "${app.topic.name}", groupId = "${app.group-id}", containerFactory = "kafkaListenerContainerFactory")
-    public void consumeUserMessage(@Payload PassportDto msg, @Headers MessageHeaders headers) throws IOException {
-        logger.info("received data in KafkaMsgListener = {}", msg);
+    public void consumeUserMessage(@Payload PassportDto passportDto, @Headers MessageHeaders headers) throws IOException {
+        logger.info("Received data in KafkaMsgListener = {}", passportDto);
+        EmailNotificationService emailNotification = new EmailNotificationService();
+        emailNotification.emailTo(passportDto);
     }
 }
